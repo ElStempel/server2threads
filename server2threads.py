@@ -6,7 +6,7 @@ from threading import Thread
 import array
 import time
 
-TCP_IP = '127.0.0.1'
+TCP_IP = '192.168.1.20'
 TCP_PORT = 5005
 BUFFER_SIZE = 1024  # Normally 1024, but we want fast response
 WELCOME_MESSAGE = "Witam Kurwa"
@@ -77,6 +77,7 @@ def klient2(ip, port):
 
 
 
+
 while True:
     s.listen(1)
     (conn, (ip, port)) = s.accept()
@@ -91,5 +92,9 @@ while True:
     break
 
 
-if t1.join() & t2.join():
-    s.close()
+while True:
+    time.wait(1)
+
+s.close()
+
+
