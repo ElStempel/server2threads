@@ -89,7 +89,7 @@ def klient1(ip, port):
     while True:
         c1los = conn.recv(BUFFER_SIZE)
         print("Klient wysyla: ", c1los.decode())
-        if(wyliczona == c1los):
+        if(int(wyliczona) == int(c1los)):
             print("Klient zgadl")
             conn.send(bytes('tak', 'utf-8'))
             break
@@ -122,7 +122,7 @@ def klient2(ip, port):
     while True:
         c2los = conn2.recv(BUFFER_SIZE)
         print("Klient wysyla: ", c2los.decode())
-        if(wyliczona == c2los):
+        if(int(wyliczona) == int(c2los)):
             print("Klient zgadl")
             conn2.send(bytes('tak', 'utf-8'))
             break
