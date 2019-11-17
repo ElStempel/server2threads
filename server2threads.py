@@ -6,10 +6,10 @@ from threading import Thread
 import array
 import time
 
-TCP_IP = '192.168.1.20'
+TCP_IP = '127.0.0.1'
 TCP_PORT = 5005
 BUFFER_SIZE = 1024  # Normally 1024, but we want fast response
-WELCOME_MESSAGE = "Witam Kurwa"
+
 
 lista = []
 wyliczona = 0
@@ -41,6 +41,9 @@ def wylicz():
         wyliczona = liczba
 
 
+licz = Thread(target=wylicz, args=())
+
+
 def sessionID():
     id = str(random.randrange(0, 7))
     print("ID sesji to: ")
@@ -64,7 +67,11 @@ def klient1(ip, port):
     global L2
     print('Starting thread1\n')
     id = sessionID()
-
+    odebrana = conn.recv(BUFFER_SIZE)
+    print("Otrzymano: ", odebrana.decode())
+    lista.append(int(odebrana.decode()))
+    licz.start()
+    licz.join()
 
 
 def klient2(ip, port):
@@ -74,8 +81,11 @@ def klient2(ip, port):
     global L2
     print('Starting thread2\n')
     id = sessionID()
-
-
+    odebrana2 = conn.recv(BUFFER_SIZE)
+    print("Otrzymano: ", odebrana2.decode())
+    lista.append(int(odebrana2.decode()))
+    licz.start()
+    licz.join()
 
 
 while True:
@@ -91,10 +101,7 @@ while True:
 
     break
 
-
 while True:
     time.wait(1)
 
 s.close()
-
-
