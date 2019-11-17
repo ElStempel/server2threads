@@ -6,7 +6,7 @@ from threading import Thread
 import array
 import time
 
-TCP_IP = '127.0.0.1'
+TCP_IP = '192.168.0.105'
 TCP_PORT = 5005
 BUFFER_SIZE = 1024  # Normally 1024, but we want fast response
 
@@ -52,7 +52,7 @@ def sessionID():
 
 
 def wyslijID(id):
-    s.send(bytes(id, "utf-8"))
+    conn.send(bytes(id, "utf-8"))
 
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -68,10 +68,17 @@ def klient1(ip, port):
     print('Starting thread1\n')
     id = sessionID()
     odebrana = conn.recv(BUFFER_SIZE)
+    wyslijID(id)
+    conn.send(odebrana)
     print("Otrzymano: ", odebrana.decode())
     lista.append(int(odebrana.decode()))
     licz.start()
     licz.join()
+    time.sleep(5)
+    print("Wysyłam: " + str(L1))
+    conn.send(bytes(L1))
+    print("Wysyłam: " + str(L2))
+    conn.send(bytes(L2))
 
 
 def klient2(ip, port):
@@ -82,10 +89,16 @@ def klient2(ip, port):
     print('Starting thread2\n')
     id = sessionID()
     odebrana2 = conn.recv(BUFFER_SIZE)
+    wyslijID(id)
+    conn.send(odebrana2)
     print("Otrzymano: ", odebrana2.decode())
     lista.append(int(odebrana2.decode()))
-    licz.start()
     licz.join()
+    time.sleep(5)
+    print("Wysyłam: " + str(L1))
+    conn.send(bytes(L1))
+    print("Wysyłam: " + str(L2))
+    conn.send(bytes(L2))
 
 
 while True:
@@ -102,6 +115,6 @@ while True:
     break
 
 while True:
-    time.wait(1)
+    time.sleep(1)
 
 s.close()
