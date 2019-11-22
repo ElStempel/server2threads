@@ -6,7 +6,7 @@ from threading import Thread
 import array
 import time
 
-TCP_IP = '192.168.0.106'
+TCP_IP = '192.168.0.107'
 TCP_PORT = 5005
 BUFFER_SIZE = 1024  # Normally 1024, but we want fast response
 
