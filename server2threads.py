@@ -143,9 +143,14 @@ def klient2(ip, port):
         if (int(op) == 1):
             lista.append(int(num))
             licz.join()
-            print("Wysylam: " + str(dol))
-            conn2.send(Header.Header(0, 1, id, int(dol)).getHeader())
-            # wyslanie dolu = 1
+            if bezwzg == 1:
+                print("Wysylam: -" + str(dol))
+                conn2.send(Header.Header(0, 3, id, int(dol)).getHeader())
+                # 3 = dol ujemny
+            else:
+                print("Wysylam: " + str(dol))
+                conn2.send(Header.Header(0, 1, id, int(dol)).getHeader())
+                # wyslanie dolu = 1
             print("Wysylam: " + str(gora))
             conn2.send(Header.Header(0, 2, id, int(gora)).getHeader())
             # wyslanie gory = 2
