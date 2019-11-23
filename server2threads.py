@@ -18,6 +18,7 @@ L1 = 0
 L2 = 0
 dol = 0
 gora = 0
+bezwzg = 0
 
 
 def wylicz():
@@ -28,6 +29,7 @@ def wylicz():
     global L2
     global dol
     global gora
+    global bezwzg
     while True:
         if (uzyto == 1):
             uzyto = 1
@@ -39,6 +41,9 @@ def wylicz():
         L2 = lista.pop()
         L1 = lista.pop()
         dol = L1 - L2
+        if dol < 0:
+            dol = abs(dol)
+            bezwzg = 1
         gora = L1 + L2
         liczba = random.randrange(L1 - L2, L1 + L2)
         print("Wylosowana liczba: ")
@@ -61,6 +66,7 @@ def klient1(ip, port):
     global L2
     global dol
     global gora
+    global bezwzg
     print('Klient 1 polaczony \n')
     id = 1
     req = conn.recv(BUFFER_SIZE)
@@ -78,9 +84,14 @@ def klient1(ip, port):
         if(int(op) == 1):
             lista.append(int(num))
             licz.join()
-            print("Wysylam: " + str(dol))
-            conn.send(Header.Header(0, 1, id, int(dol)).getHeader())
-            # wyslanie dolu = 1
+            if bezwzg == 1:
+                print("Wysylam: -" + str(dol))
+                conn.send(Header.Header(0, 3, id, int(dol)).getHeader())
+                # 3 = dol ujemny
+            else:
+                print("Wysylam: " + str(dol))
+                conn.send(Header.Header(0, 1, id, int(dol)).getHeader())
+                # wyslanie dolu = 1
             print("Wysylam: " + str(gora))
             conn.send(Header.Header(0, 2, id, int(gora)).getHeader())
             # wyslanie gory = 2
@@ -103,6 +114,7 @@ def klient2(ip, port):
     global L2
     global dol
     global gora
+    global bezwzg
     print('Starting thread2\n')
     id = 2
     req = conn2.recv(BUFFER_SIZE)
