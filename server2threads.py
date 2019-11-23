@@ -160,6 +160,18 @@ def klient2(ip, port):
                 conn2.send(Header.Header(0, 6, id, 0).getHeader())
                 # 6 = nie zgadl
 
+        if (int(op) == 6):
+            print("Klient 1 zgaduje: ", -num)
+            if (int(wyliczona) == int(-num)):
+                print("Klient 1 zgadl")
+                conn2.send(Header.Header(0, 5, id, 0).getHeader())
+                # 5 = zgadl
+            else:
+                print("Nie zgadnieto")
+                conn2.send(Header.Header(0, 6, id, 0).getHeader())
+                # 6 = nie zgadl
+
+
 print("Serwer dziala")
 while True:
     s.listen(1)
