@@ -57,10 +57,6 @@ def sessionID():
     return id
 
 
-def wyslijID(id):
-    conn.send(bytes(id, "utf-8"))
-
-
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 s.bind((TCP_IP, TCP_PORT))
@@ -74,34 +70,40 @@ def klient1(ip, port):
     global dol
     global gora
     print('Starting thread1\n')
-    id = sessionID()
-    gib = conn.recv(BUFFER_SIZE)
-    gib = Header.setHeader(gib)
-    conn.send(Header.Header(0, 9, 1, 0).getHeader())
+    id = 1
+    req = conn.recv(BUFFER_SIZE)
+    gib = Header.Header(0,0,0,0)
+    gib.setHeader(req)
+    conn.send(Header.Header(0, 9, id, 0).getHeader())
     #wysylanie id = 9
     odebrana = conn.recv(BUFFER_SIZE)
-    recTab = Header.setHeader(odebrana)
+    gib.setHeader(odebrana)
+    rec = gib.getNumber()
     #conn.send(odebrana)
-    lista.append(int(recTab[2]))
+    lista.append(int(rec))
     licz.start()
     licz.join()
     time.sleep(5)
     print("Wysyłam: " + str(dol))
-    conn.send(Header.Header(0, 1, 1, dol).getHeader())
+    conn.send(Header.Header(0, 1, id, dol).getHeader())
     #wyslanie dolu = 1
     print("Wysyłam: " + str(gora))
-    conn.send(Header.Header(0, 2, 1, gora).getHeader())
+    conn.send(Header.Header(0, 2, id, gora).getHeader())
     #wyslanie gory = 2
     while True:
         c1los = conn.recv(BUFFER_SIZE)
-        print("Klient wysyla: ", c1los.decode())
-        if(int(wyliczona) == int(c1los)):
+        gib.setHeader(c1los)
+        los1 = gib.getNumber()
+        print("Klient wysyla: ", los1)
+        if(int(wyliczona) == int(los1)):
             print("Klient zgadl")
-            conn.send(bytes('tak', 'utf-8'))
+            conn.send(Header.Header(0, 5, id, 0).getHeader())
+            #5 = zgadl
             break
         else:
             print("Nie zgadnieto")
-            conn.send(bytes('nie','utf-8'))
+            conn.send(Header.Header(0, 6, id, 0).getHeader())
+            #6 = nie zgadl
 
 
 
@@ -113,33 +115,39 @@ def klient2(ip, port):
     global dol
     global gora
     print('Starting thread2\n')
-    id = sessionID()
-    gib = conn2.recv(BUFFER_SIZE)
-    gib = Header.setHeader(gib)
-    conn2.send(Header.Header(0, 9, 2, 0).getHeader())
+    id = 2
+    req = conn2.recv(BUFFER_SIZE)
+    gib = Header.Header(0,0,0,0)
+    gib.setHeader(req)
+    conn2.send(Header.Header(0, 9, id, 0).getHeader())
     # wysylanie id = 9
     odebrana = conn2.recv(BUFFER_SIZE)
-    recTab = Header.setHeader(odebrana)
-    # conn.send(odebrana)
-    lista.append(int(recTab[2]))
+    gib.setHeader(odebrana)
+    rec = gib.getNumber()
+    # conn2.send(odebrana)
+    lista.append(int(rec))
     licz.join()
     time.sleep(5)
     print("Wysyłam: " + str(dol))
-    conn2.send(Header.Header(0, 1, 2, dol).getHeader())
+    conn2.send(Header.Header(0, 1, id, dol).getHeader())
     # wyslanie dolu = 1
     print("Wysyłam: " + str(gora))
-    conn2.send(Header.Header(0, 2, 2, gora).getHeader())
+    conn2.send(Header.Header(0, 2, id, gora).getHeader())
     # wyslanie gory = 2
     while True:
         c2los = conn2.recv(BUFFER_SIZE)
-        print("Klient wysyla: ", c2los.decode())
-        if(int(wyliczona) == int(c2los)):
+        gib.setHeader(c2los)
+        los2 = gib.getNumber()
+        print("Klient wysyla: ", los2)
+        if(int(wyliczona) == int(los2)):
             print("Klient zgadl")
-            conn2.send(bytes('tak', 'utf-8'))
+            conn2.send(Header.Header(0, 5, id, 0).getHeader())
+            # 5 = zgadl
             break
         else:
             print("Nie zgadnieto")
-            conn2.send(bytes('nie','utf-8'))
+            conn2.send(Header.Header(0, 6, id, 0).getHeader())
+            # 6 = nie zgadl
 
 
 while True:

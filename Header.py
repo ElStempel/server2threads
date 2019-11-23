@@ -3,8 +3,7 @@ import math
 
 
 class Header:
-    def __init__(self):
-        self.all = (0, 0, 0, 0)
+
 
     def __init__(self, op, ans, sesID, number):
         self.all = []
@@ -34,25 +33,39 @@ class Header:
         return arrayBH
 
     def setHeader(self, rec):
-        recTab = []
-
         data = int.from_bytes(rec, 'big')
         bitShift = ((2 ** 4), (2 ** 36), (2 ** 39), (2 ** 42), (2 ** 48))
+
+        # operation
+        tmp = data % bitShift[4]
+        op = int(tmp/bitShift[3])
+        # answer
+        tmp = data % bitShift[3]
+        ans = int(tmp / bitShift[2])
+        # id
+        tmp = data % bitShift[2]
+        id = int(tmp / bitShift[1])
+        # number
         tmp = data % bitShift[1]
         number = int(tmp / bitShift[0])
 
-        tmp = data % bitShift[2]
-        id = int(tmp / bitShift[1])
-
-        tmp = data % bitShift[3]
-        ans = int(tmp / bitShift[2])
+        self.all[0] = op
+        self.all[1] = ans
+        self.all[2] = id
+        self.all[3] = number
 
         print("Liczba: ", number)
         print("Odp: ", ans)
         print("ID: ", id)
 
-        recTab.append(ans)
-        recTab.append(id)
-        recTab.append(number)
+    def getOp(self):
+        return self.all[0]
 
-        return recTab
+    def getAns(self):
+        return self.all[1]
+
+    def getSesID(self):
+        return self.all[2]
+
+    def getNumber(self):
+        return self.all[3]
