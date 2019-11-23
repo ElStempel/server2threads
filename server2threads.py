@@ -5,8 +5,9 @@ import queue
 from threading import Thread
 import array
 import time
+import Header
 
-TCP_IP = '192.168.0.107'
+TCP_IP = 'localhost'
 TCP_PORT = 5005
 BUFFER_SIZE = 1024  # Normally 1024, but we want fast response
 
@@ -18,23 +19,32 @@ L2 = 0
 dol = 0
 gora = 0
 
-###########################
-wyslicz = '100000'
-wyszgad = '111000'
 
-puste = '000000'
+def setHeader(rec):
+    recTab = []
 
-###########################
-pustodp = '000'
+    data = int.from_bytes(rec, 'big')
+    bitShift = ((2**4), (2**36), (2**39), (2**42), (2**48))
+    tmp = data % bitShift[1]
+    number = int(tmp/bitShift[0])
 
-odpl = '100'
-odpzgT = '111'
-odpzgadN = '101'
+    tmp = data % bitShift[2]
+    id = int(tmp/bitShift[1])
 
-###########################
-id1 = '001'
-id2 = '011'
-###########################
+    tmp = data % bitShift[3]
+    ans = int(tmp/bitShift[2])
+
+    print("Liczba: ", number)
+    print("Odp: ", ans)
+    print("ID: ", id)
+
+    recTab.append(ans)
+    recTab.append(id)
+    recTab.append(number)
+
+    return recTab
+
+
 
 
 def wylicz():
@@ -92,18 +102,23 @@ def klient1(ip, port):
     global gora
     print('Starting thread1\n')
     id = sessionID()
+    gib = conn.recv(BUFFER_SIZE)
+    gib = setHeader(gib)
+    conn.send(Header.Header(0, 9, 1, 0).getHeader())
+    #wysylanie id = 9
     odebrana = conn.recv(BUFFER_SIZE)
-    conn.send(bytes(id, 'utf-8'))
-    conn.send(odebrana)
-    print("Otrzymano: ", odebrana.decode())
-    lista.append(int(odebrana.decode()))
+    recTab = setHeader(odebrana)
+    #conn.send(odebrana)
+    lista.append(int(recTab[2]))
     licz.start()
     licz.join()
     time.sleep(5)
     print("Wysyłam: " + str(dol))
-    conn.send(bytes(str(dol), 'utf-8'))
+    conn.send(Header.Header(0, 1, 1, dol).getHeader())
+    #wyslanie dolu = 1
     print("Wysyłam: " + str(gora))
-    conn.send(bytes(str(gora), 'utf-8'))
+    conn.send(Header.Header(0, 2, 1, gora).getHeader())
+    #wyslanie gory = 2
     while True:
         c1los = conn.recv(BUFFER_SIZE)
         print("Klient wysyla: ", c1los.decode())
@@ -126,17 +141,23 @@ def klient2(ip, port):
     global gora
     print('Starting thread2\n')
     id = sessionID()
-    odebrana2 = conn2.recv(BUFFER_SIZE)
-    conn2.send(bytes(id, 'utf-8'))
-    conn2.send(odebrana2)
-    print("Otrzymano: ", odebrana2.decode())
-    lista.append(int(odebrana2.decode()))
+    gib = conn2.recv(BUFFER_SIZE)
+    gib = setHeader(gib)
+    conn2.send(Header.Header(0, 9, 2, 0).getHeader())
+    # wysylanie id = 9
+    odebrana = conn.recv(BUFFER_SIZE)
+    recTab = setHeader(odebrana)
+    # conn.send(odebrana)
+    lista.append(int(recTab[2]))
+    licz.start()
     licz.join()
     time.sleep(5)
     print("Wysyłam: " + str(dol))
-    conn2.send(bytes(str(dol), 'utf-8'))
+    conn2.send(Header.Header(0, 1, 2, dol).getHeader())
+    # wyslanie dolu = 1
     print("Wysyłam: " + str(gora))
-    conn2.send(bytes(str(gora), 'utf-8'))
+    conn2.send(Header.Header(0, 2, 2, gora).getHeader())
+    # wyslanie gory = 2
     while True:
         c2los = conn2.recv(BUFFER_SIZE)
         print("Klient wysyla: ", c2los.decode())
