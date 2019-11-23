@@ -49,14 +49,6 @@ def wylicz():
 
 licz = Thread(target=wylicz, args=())
 
-
-def sessionID():
-    id = str(random.randrange(0, 7))
-    print("ID sesji to: ")
-    print(id)
-    return id
-
-
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 s.bind((TCP_IP, TCP_PORT))
@@ -69,42 +61,39 @@ def klient1(ip, port):
     global L2
     global dol
     global gora
-    print('Starting thread1\n')
+    print('Klient 1 polaczony \n')
     id = 1
     req = conn.recv(BUFFER_SIZE)
     gib = Header.Header(0,0,0,0)
     gib.setHeader(req)
     conn.send(Header.Header(0, 9, id, 0).getHeader())
     #wysylanie id = 9
-    odebrana = conn.recv(BUFFER_SIZE)
-    gib.setHeader(odebrana)
-    rec = gib.getNumber()
-    #conn.send(odebrana)
-    lista.append(int(rec))
-    licz.start()
-    licz.join()
-    time.sleep(5)
-    print("Wysyłam: " + str(dol))
-    conn.send(Header.Header(0, 1, id, dol).getHeader())
-    #wyslanie dolu = 1
-    print("Wysyłam: " + str(gora))
-    conn.send(Header.Header(0, 2, id, gora).getHeader())
-    #wyslanie gory = 2
-    while True:
-        c1los = conn.recv(BUFFER_SIZE)
-        gib.setHeader(c1los)
-        los1 = gib.getNumber()
-        print("Klient wysyla: ", los1)
-        if(int(wyliczona) == int(los1)):
-            print("Klient zgadl")
-            conn.send(Header.Header(0, 5, id, 0).getHeader())
-            #5 = zgadl
-            break
-        else:
-            print("Nie zgadnieto")
-            conn.send(Header.Header(0, 6, id, 0).getHeader())
-            #6 = nie zgadl
 
+    while True:
+        odebrana = conn.recv(BUFFER_SIZE)
+        gib.setHeader(odebrana)
+        op = gib.getOp()
+        num = gib.getNumber()
+
+        if(int(op) == 1):
+            lista.append(int(num))
+            licz.join()
+            print("Wysylam: " + str(dol))
+            conn.send(Header.Header(0, 1, id, int(dol)).getHeader())
+            # wyslanie dolu = 1
+            print("Wysylam: " + str(gora))
+            conn.send(Header.Header(0, 2, id, int(gora)).getHeader())
+            # wyslanie gory = 2
+        if(int(op) == 5):
+            print("Klient zgaduje: ", num)
+            if (int(wyliczona) == int(num)):
+                print("Klient zgadl")
+                conn.send(Header.Header(0, 5, id, 0).getHeader())
+                # 5 = zgadl
+            else:
+                print("Nie zgadnieto")
+                conn.send(Header.Header(0, 6, id, 0).getHeader())
+                # 6 = nie zgadl
 
 
 def klient2(ip, port):
@@ -121,35 +110,34 @@ def klient2(ip, port):
     gib.setHeader(req)
     conn2.send(Header.Header(0, 9, id, 0).getHeader())
     # wysylanie id = 9
-    odebrana = conn2.recv(BUFFER_SIZE)
-    gib.setHeader(odebrana)
-    rec = gib.getNumber()
-    # conn2.send(odebrana)
-    lista.append(int(rec))
-    licz.join()
-    time.sleep(5)
-    print("Wysyłam: " + str(dol))
-    conn2.send(Header.Header(0, 1, id, dol).getHeader())
-    # wyslanie dolu = 1
-    print("Wysyłam: " + str(gora))
-    conn2.send(Header.Header(0, 2, id, gora).getHeader())
-    # wyslanie gory = 2
+
     while True:
-        c2los = conn2.recv(BUFFER_SIZE)
-        gib.setHeader(c2los)
-        los2 = gib.getNumber()
-        print("Klient wysyla: ", los2)
-        if(int(wyliczona) == int(los2)):
-            print("Klient zgadl")
-            conn2.send(Header.Header(0, 5, id, 0).getHeader())
-            # 5 = zgadl
-            break
-        else:
-            print("Nie zgadnieto")
-            conn2.send(Header.Header(0, 6, id, 0).getHeader())
-            # 6 = nie zgadl
+        odebrana = conn2.recv(BUFFER_SIZE)
+        gib.setHeader(odebrana)
+        op = gib.getOp()
+        num = gib.getNumber()
 
+        if (int(op) == 1):
+            lista.append(int(num))
+            licz.join()
+            print("Wysylam: " + str(dol))
+            conn2.send(Header.Header(0, 1, id, int(dol)).getHeader())
+            # wyslanie dolu = 1
+            print("Wysylam: " + str(gora))
+            conn2.send(Header.Header(0, 2, id, int(gora)).getHeader())
+            # wyslanie gory = 2
+        if (int(op) == 5):
+            print("Klient zgaduje: ", num)
+            if (int(wyliczona) == int(num)):
+                print("Klient zgadl")
+                conn2.send(Header.Header(0, 5, id, 0).getHeader())
+                # 5 = zgadl
+            else:
+                print("Nie zgadnieto")
+                conn2.send(Header.Header(0, 6, id, 0).getHeader())
+                # 6 = nie zgadl
 
+print("Serwer dziala")
 while True:
     s.listen(1)
     (conn, (ip, port)) = s.accept()
@@ -160,7 +148,7 @@ while True:
     (conn2, (ip2, port2)) = s.accept()
     t2 = Thread(target=klient2, args=(ip2, port2))
     t2.start()
-
+    licz.start()
     break
 
 while True:

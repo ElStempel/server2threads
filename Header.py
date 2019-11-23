@@ -54,9 +54,6 @@ class Header:
         self.all[2] = id
         self.all[3] = number
 
-        print("Liczba: ", number)
-        print("Odp: ", ans)
-        print("ID: ", id)
 
     def getOp(self):
         return self.all[0]
