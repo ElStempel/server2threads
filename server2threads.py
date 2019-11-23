@@ -186,6 +186,8 @@ while True:
     licz.start()
     break
 
+t1.join()
+t2.join()
 while True:
     time.sleep(1)
 
