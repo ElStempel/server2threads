@@ -96,9 +96,9 @@ def klient1(ip, port):
             conn.send(Header.Header(0, 2, id, int(gora)).getHeader())
             # wyslanie gory = 2
         if(int(op) == 5):
-            print("Klient zgaduje: ", num)
+            print("Klient 1 zgaduje: ", num)
             if (int(wyliczona) == int(num)):
-                print("Klient zgadl")
+                print("Klient 1 zgadl")
                 conn.send(Header.Header(0, 5, id, 0).getHeader())
                 # 5 = zgadl
             else:
@@ -115,7 +115,7 @@ def klient2(ip, port):
     global dol
     global gora
     global bezwzg
-    print('Starting thread2\n')
+    print('Klient 2 polaczony\n')
     id = 2
     req = conn2.recv(BUFFER_SIZE)
     gib = Header.Header(0,0,0,0)
@@ -139,9 +139,9 @@ def klient2(ip, port):
             conn2.send(Header.Header(0, 2, id, int(gora)).getHeader())
             # wyslanie gory = 2
         if (int(op) == 5):
-            print("Klient zgaduje: ", num)
+            print("Klient 2 zgaduje: ", num)
             if (int(wyliczona) == int(num)):
-                print("Klient zgadl")
+                print("Klient 2 zgadl")
                 conn2.send(Header.Header(0, 5, id, 0).getHeader())
                 # 5 = zgadl
             else:
