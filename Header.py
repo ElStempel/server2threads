@@ -3,6 +3,9 @@ import math
 
 
 class Header:
+    def __init__(self):
+        self.all = (0, 0, 0, 0)
+
     def __init__(self, op, ans, sesID, number):
         self.all = []
 
@@ -23,9 +26,33 @@ class Header:
         arrayBH[1] <<= 4
         arrayBH[1] += ((self.all[3] & 4026531840) >> 28)
 
-        tmpINT = (self.all[3] << 4)
-        arrayBH[2] += ((tmpINT & 0xF000) >> 24)
-        arrayBH[3] += ((tmpINT & 0xF00) >> 16)
-        arrayBH[4] += ((tmpINT & 0xF0) >> 8)
-        arrayBH[5] += tmpINT
+        tmpINT = (self.all[3]<<4)
+        arrayBH[2] += ((tmpINT & 0xFF000000) >> 24)
+        arrayBH[3] += ((tmpINT & 0xFF0000) >> 16)
+        arrayBH[4] += ((tmpINT & 0xFF00) >> 8)
+        arrayBH[5] += (tmpINT & 0xF0)
         return arrayBH
+
+    def setHeader(self, rec):
+        recTab = []
+
+        data = int.from_bytes(rec, 'big')
+        bitShift = ((2 ** 4), (2 ** 36), (2 ** 39), (2 ** 42), (2 ** 48))
+        tmp = data % bitShift[1]
+        number = int(tmp / bitShift[0])
+
+        tmp = data % bitShift[2]
+        id = int(tmp / bitShift[1])
+
+        tmp = data % bitShift[3]
+        ans = int(tmp / bitShift[2])
+
+        print("Liczba: ", number)
+        print("Odp: ", ans)
+        print("ID: ", id)
+
+        recTab.append(ans)
+        recTab.append(id)
+        recTab.append(number)
+
+        return recTab

@@ -7,7 +7,7 @@ import array
 import time
 import Header
 
-TCP_IP = 'localhost'
+TCP_IP = '192.168.0.107'
 TCP_PORT = 5005
 BUFFER_SIZE = 1024  # Normally 1024, but we want fast response
 
@@ -18,33 +18,6 @@ L1 = 0
 L2 = 0
 dol = 0
 gora = 0
-
-
-def setHeader(rec):
-    recTab = []
-
-    data = int.from_bytes(rec, 'big')
-    bitShift = ((2**4), (2**36), (2**39), (2**42), (2**48))
-    tmp = data % bitShift[1]
-    number = int(tmp/bitShift[0])
-
-    tmp = data % bitShift[2]
-    id = int(tmp/bitShift[1])
-
-    tmp = data % bitShift[3]
-    ans = int(tmp/bitShift[2])
-
-    print("Liczba: ", number)
-    print("Odp: ", ans)
-    print("ID: ", id)
-
-    recTab.append(ans)
-    recTab.append(id)
-    recTab.append(number)
-
-    return recTab
-
-
 
 
 def wylicz():
@@ -103,11 +76,11 @@ def klient1(ip, port):
     print('Starting thread1\n')
     id = sessionID()
     gib = conn.recv(BUFFER_SIZE)
-    gib = setHeader(gib)
+    gib = Header.setHeader(gib)
     conn.send(Header.Header(0, 9, 1, 0).getHeader())
     #wysylanie id = 9
     odebrana = conn.recv(BUFFER_SIZE)
-    recTab = setHeader(odebrana)
+    recTab = Header.setHeader(odebrana)
     #conn.send(odebrana)
     lista.append(int(recTab[2]))
     licz.start()
@@ -142,14 +115,13 @@ def klient2(ip, port):
     print('Starting thread2\n')
     id = sessionID()
     gib = conn2.recv(BUFFER_SIZE)
-    gib = setHeader(gib)
+    gib = Header.setHeader(gib)
     conn2.send(Header.Header(0, 9, 2, 0).getHeader())
     # wysylanie id = 9
-    odebrana = conn.recv(BUFFER_SIZE)
-    recTab = setHeader(odebrana)
+    odebrana = conn2.recv(BUFFER_SIZE)
+    recTab = Header.setHeader(odebrana)
     # conn.send(odebrana)
     lista.append(int(recTab[2]))
-    licz.start()
     licz.join()
     time.sleep(5)
     print("Wysyłam: " + str(dol))
