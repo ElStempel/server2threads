@@ -1,16 +1,15 @@
 import random
 import socket
-import string
-import queue
 from threading import Thread
-import array
 import time
 import Header
 
+# Dane serwera
 TCP_IP = '192.168.0.107'
 TCP_PORT = 5005
-BUFFER_SIZE = 1024  # Normally 1024, but we want fast response
+BUFFER_SIZE = 1024
 
+# globalne zmienne (niektore do debugowania sluzyly)
 lista = []
 wyliczona = 0
 uzyto = 0
@@ -21,6 +20,7 @@ gora = 0
 bezwzg = 0
 
 
+# funkcja wyliczajaca
 def wylicz():
     global uzyto
     global wyliczona
@@ -52,13 +52,16 @@ def wylicz():
         wyliczona = liczba
 
 
+# deklaracja watku wyliczania
 licz = Thread(target=wylicz, args=())
 
+# polaczenie ip i portu z socketem
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 s.bind((TCP_IP, TCP_PORT))
 
 
+# funkcja obslugi watku klienta 1
 def klient1(ip, port):
     global wyliczona
     global lista
@@ -70,10 +73,10 @@ def klient1(ip, port):
     print('Klient 1 polaczony \n')
     id = 1
     req = conn.recv(BUFFER_SIZE)
-    gib = Header.Header(0,0,0,0)
+    gib = Header.Header(0, 0, 0, 0)
     gib.setHeader(req)
     conn.send(Header.Header(0, 9, id, 0).getHeader())
-    #wysylanie id = 9
+    # wysylanie id = 9
 
     while True:
         odebrana = conn.recv(BUFFER_SIZE)
@@ -81,9 +84,10 @@ def klient1(ip, port):
         op = gib.getOp()
         num = gib.getNumber()
 
-        if(int(op) == 1):
+        if (int(op) == 1):
             lista.append(int(num))
             print("Klient 1 wysylal: ", num)
+            time.sleep(1)
             licz.join()
             if bezwzg == 1:
                 print("Wysylam do klienta 1: -" + str(dol))
@@ -96,7 +100,7 @@ def klient1(ip, port):
             print("Wysylam do klienta 1: " + str(gora))
             conn.send(Header.Header(0, 2, id, int(gora)).getHeader())
             # wyslanie gory = 2
-        if(int(op) == 5):
+        if (int(op) == 5):
             print("Klient 1 zgaduje: ", num)
             if (int(wyliczona) == int(num)):
                 print("Klient 1 zgadl")
@@ -123,6 +127,7 @@ def klient1(ip, port):
             break
 
 
+# funkcja obslugi watku klienta 1
 def klient2(ip, port):
     global wyliczona
     global lista
@@ -134,7 +139,7 @@ def klient2(ip, port):
     print('Klient 2 polaczony\n')
     id = 2
     req = conn2.recv(BUFFER_SIZE)
-    gib = Header.Header(0,0,0,0)
+    gib = Header.Header(0, 0, 0, 0)
     gib.setHeader(req)
     conn2.send(Header.Header(0, 9, id, 0).getHeader())
     # wysylanie id = 9
@@ -148,6 +153,7 @@ def klient2(ip, port):
         if (int(op) == 1):
             lista.append(int(num))
             print("Klient 2 wysylal: ", num)
+            time.sleep(1)
             licz.join()
             if bezwzg == 1:
                 print("Wysylam do klienta 2: -" + str(dol))
@@ -182,11 +188,12 @@ def klient2(ip, port):
                 conn2.send(Header.Header(0, 6, id, 0).getHeader())
                 # 6 = nie zgadl
 
-        if(int(op) == 7):
+        if (int(op) == 7):
             print("\n\nKlient 2 zamyka polacznie\n\n")
             break
 
 
+# odpalenie serwera
 print("Serwer dziala")
 while True:
     licz.start()
@@ -201,8 +208,12 @@ while True:
     t2.start()
     break
 
+
+# oczekiwanie na zakonczenie watkow
 t1.join()
 t2.join()
 print("Zamykam serwer")
 
+
+# zamkniecie serwera
 s.close()
