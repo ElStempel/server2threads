@@ -85,14 +85,14 @@ def klient1(ip, port):
             lista.append(int(num))
             licz.join()
             if bezwzg == 1:
-                print("Wysylam: -" + str(dol))
+                print("Wysylam do klienta 1: -" + str(dol))
                 conn.send(Header.Header(0, 3, id, int(dol)).getHeader())
                 # 3 = dol ujemny
             else:
-                print("Wysylam: " + str(dol))
+                print("Wysylam do klienta 1: " + str(dol))
                 conn.send(Header.Header(0, 1, id, int(dol)).getHeader())
                 # wyslanie dolu = 1
-            print("Wysylam: " + str(gora))
+            print("Wysylam do klienta 1: " + str(gora))
             conn.send(Header.Header(0, 2, id, int(gora)).getHeader())
             # wyslanie gory = 2
         if(int(op) == 5):
@@ -102,7 +102,7 @@ def klient1(ip, port):
                 conn.send(Header.Header(0, 5, id, 0).getHeader())
                 # 5 = zgadl
             else:
-                print("Nie zgadnieto")
+                print("Klient 1 nie zgadl")
                 conn.send(Header.Header(0, 6, id, 0).getHeader())
                 # 6 = nie zgadl
 
@@ -113,9 +113,13 @@ def klient1(ip, port):
                 conn.send(Header.Header(0, 5, id, 0).getHeader())
                 # 5 = zgadl
             else:
-                print("Nie zgadnieto")
+                print("Klient 1 nie zgadl")
                 conn.send(Header.Header(0, 6, id, 0).getHeader())
                 # 6 = nie zgadl
+
+        if (int(op) == 7):
+            print("\n\nKlient 1 zamyka polacznie\n\n")
+            break
 
 
 def klient2(ip, port):
@@ -144,14 +148,14 @@ def klient2(ip, port):
             lista.append(int(num))
             licz.join()
             if bezwzg == 1:
-                print("Wysylam: -" + str(dol))
+                print("Wysylam do klienta 2: -" + str(dol))
                 conn2.send(Header.Header(0, 3, id, int(dol)).getHeader())
                 # 3 = dol ujemny
             else:
-                print("Wysylam: " + str(dol))
+                print("Wysylam do klienta 2: " + str(dol))
                 conn2.send(Header.Header(0, 1, id, int(dol)).getHeader())
                 # wyslanie dolu = 1
-            print("Wysylam: " + str(gora))
+            print("Wysylam do klienta 2: " + str(gora))
             conn2.send(Header.Header(0, 2, id, int(gora)).getHeader())
             # wyslanie gory = 2
         if (int(op) == 5):
@@ -161,20 +165,24 @@ def klient2(ip, port):
                 conn2.send(Header.Header(0, 5, id, 0).getHeader())
                 # 5 = zgadl
             else:
-                print("Nie zgadnieto")
+                print("Klient 2 nie zgadl")
                 conn2.send(Header.Header(0, 6, id, 0).getHeader())
                 # 6 = nie zgadl
 
         if (int(op) == 6):
-            print("Klient 1 zgaduje: ", -num)
+            print("Klient 2 zgaduje: ", -num)
             if (int(wyliczona) == int(-num)):
-                print("Klient 1 zgadl")
+                print("Klient 2 zgadl")
                 conn2.send(Header.Header(0, 5, id, 0).getHeader())
                 # 5 = zgadl
             else:
-                print("Nie zgadnieto")
+                print("Klient 2 nie zgadl")
                 conn2.send(Header.Header(0, 6, id, 0).getHeader())
                 # 6 = nie zgadl
+
+        if(int(op) == 7):
+            print("\n\nKlient 2 zamyka polacznie\n\n")
+            break
 
 
 print("Serwer dziala")
@@ -193,7 +201,6 @@ while True:
 
 t1.join()
 t2.join()
-while True:
-    time.sleep(1)
+print("Zamykam serwer")
 
 s.close()
