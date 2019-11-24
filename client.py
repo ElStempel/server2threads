@@ -43,8 +43,8 @@ while True:
 
         # wyslanie liczby L
         while True:
-            MESSAGE = input("\nPodaj liczbe L nieujemna: ")
-            if MESSAGE.isnumeric():
+            MESSAGE = input("\nPodaj liczbe L wieksza niz 0: ")
+            if MESSAGE.isnumeric() and int(MESSAGE) > 0:
                 break
         # podawanie liczby = 1
         tcpClientA.send(Header.Header(1, 0, id, int(MESSAGE)).getHeader())
