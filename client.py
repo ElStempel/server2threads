@@ -4,7 +4,7 @@ import Header
 
 
 # Dane serwera
-host = '192.168.0.107'
+host = str(input("Wpisz IP serwera: "))
 port = 5005
 BUFFER_SIZE = 2000
 

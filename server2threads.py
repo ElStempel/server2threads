@@ -5,7 +5,8 @@ import time
 import Header
 
 # Dane serwera
-TCP_IP = '192.168.0.107'
+Hostname = socket.gethostname()
+TCP_IP = socket.gethostbyname(Hostname)
 TCP_PORT = 5005
 BUFFER_SIZE = 1024
 
@@ -195,6 +196,7 @@ def klient2(ip, port):
 
 # odpalenie serwera
 print("Serwer dziala")
+print("IP serwera: ", TCP_IP)
 while True:
     licz.start()
     s.listen(1)
