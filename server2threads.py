@@ -187,6 +187,7 @@ def klient2(ip, port):
 
 print("Serwer dziala")
 while True:
+    licz.start()
     s.listen(1)
     (conn, (ip, port)) = s.accept()
     t1 = Thread(target=klient1, args=(ip, port))
@@ -196,7 +197,6 @@ while True:
     (conn2, (ip2, port2)) = s.accept()
     t2 = Thread(target=klient2, args=(ip2, port2))
     t2.start()
-    licz.start()
     break
 
 t1.join()
