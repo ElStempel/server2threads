@@ -1,7 +1,5 @@
-import array
-import math
 
-
+# kodowanie i dekodowanie systemu binarnego
 class Header:
 
 
