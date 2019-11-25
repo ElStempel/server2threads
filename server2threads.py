@@ -39,6 +39,8 @@ def wylicz():
             if (len(lista) == 2):
                 break
         L2 = lista.pop()
+        if (L2 <= 0):
+            L2 = 1
         L1 = lista.pop()
         dol = L1 - L2
         if dol < 0:
