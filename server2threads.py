@@ -5,9 +5,7 @@ import time
 import Header
 
 # Dane serwera
-s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-s.connect(("8.8.8.8", 80))
-Hostname = s.getsockname()[0]
+Hostname = input("Podaj IP serwera: ")
 TCP_IP = socket.gethostbyname(Hostname)
 TCP_PORT = 5005
 BUFFER_SIZE = 1024
