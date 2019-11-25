@@ -92,35 +92,35 @@ def klient1(ip, port):
             licz.join()
             if bezwzg == 1:
                 print("Wysylam do klienta 1 dolna granice: -" + str(dol))
-                conn.send(Header.Header(0, 3, id, int(dol)).getHeader())
+                conn.send(Header.Header(1, 3, id, int(dol)).getHeader())
                 # 3 = dol ujemny
             else:
                 print("Wysylam do klienta 1 dolna granice: " + str(dol))
-                conn.send(Header.Header(0, 1, id, int(dol)).getHeader())
+                conn.send(Header.Header(1, 1, id, int(dol)).getHeader())
                 # wyslanie dolu = 1
             print("Wysylam do klienta 1 gorna granice: " + str(gora))
-            conn.send(Header.Header(0, 2, id, int(gora)).getHeader())
+            conn.send(Header.Header(1, 2, id, int(gora)).getHeader())
             # wyslanie gory = 2
         if (int(op) == 5):
             print("Klient 1 zgaduje: ", num)
             if (int(wyliczona) == int(num)):
                 print("Klient 1 zgadl")
-                conn.send(Header.Header(0, 5, id, 0).getHeader())
+                conn.send(Header.Header(5, 5, id, 0).getHeader())
                 # 5 = zgadl
             else:
                 print("Klient 1 nie zgadl")
-                conn.send(Header.Header(0, 6, id, 0).getHeader())
+                conn.send(Header.Header(5, 6, id, 0).getHeader())
                 # 6 = nie zgadl
 
         if (int(op) == 6):
             print("Klient 1 zgaduje: ", -num)
             if (int(wyliczona) == int(-num)):
                 print("Klient 1 zgadl")
-                conn.send(Header.Header(0, 5, id, 0).getHeader())
+                conn.send(Header.Header(6, 5, id, 0).getHeader())
                 # 5 = zgadl
             else:
                 print("Klient 1 nie zgadl")
-                conn.send(Header.Header(0, 6, id, 0).getHeader())
+                conn.send(Header.Header(6, 6, id, 0).getHeader())
                 # 6 = nie zgadl
 
         if (int(op) == 7):
@@ -158,35 +158,35 @@ def klient2(ip, port):
             licz.join()
             if bezwzg == 1:
                 print("Wysylam do klienta 2 dolna granice: -" + str(dol))
-                conn2.send(Header.Header(0, 3, id, int(dol)).getHeader())
+                conn2.send(Header.Header(1, 3, id, int(dol)).getHeader())
                 # 3 = dol ujemny
             else:
                 print("Wysylam do klienta 2 dolna granice: " + str(dol))
-                conn2.send(Header.Header(0, 1, id, int(dol)).getHeader())
+                conn2.send(Header.Header(1, 1, id, int(dol)).getHeader())
                 # wyslanie dolu = 1
             print("Wysylam do klienta 2 gorna granice: " + str(gora))
-            conn2.send(Header.Header(0, 2, id, int(gora)).getHeader())
+            conn2.send(Header.Header(1, 2, id, int(gora)).getHeader())
             # wyslanie gory = 2
         if (int(op) == 5):
             print("Klient 2 zgaduje: ", num)
             if (int(wyliczona) == int(num)):
                 print("Klient 2 zgadl")
-                conn2.send(Header.Header(0, 5, id, 0).getHeader())
+                conn2.send(Header.Header(5, 5, id, 0).getHeader())
                 # 5 = zgadl
             else:
                 print("Klient 2 nie zgadl")
-                conn2.send(Header.Header(0, 6, id, 0).getHeader())
+                conn2.send(Header.Header(5, 6, id, 0).getHeader())
                 # 6 = nie zgadl
 
         if (int(op) == 6):
             print("Klient 2 zgaduje: ", -num)
             if (int(wyliczona) == int(-num)):
                 print("Klient 2 zgadl")
-                conn2.send(Header.Header(0, 5, id, 0).getHeader())
+                conn2.send(Header.Header(6, 5, id, 0).getHeader())
                 # 5 = zgadl
             else:
                 print("Klient 2 nie zgadl")
-                conn2.send(Header.Header(0, 6, id, 0).getHeader())
+                conn2.send(Header.Header(6, 6, id, 0).getHeader())
                 # 6 = nie zgadl
 
         if (int(op) == 7):
