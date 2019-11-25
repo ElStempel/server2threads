@@ -35,10 +35,10 @@ while True:
 
 
         # otrzymanie id
-        if (int(ans) == 9):
+        if (int(ans) == 7):
             sesid = id
             print("\nID sesji to: ", sesid)
-            # podawanie id = 9
+            # podawanie id = 7
 
 
         # wyslanie liczby L
