@@ -74,21 +74,20 @@ while True:
 
 
         # losowanie i wysylanie liczby
-        zle = []
         while True:
-            while True: # sprawdzanie czy liczba sie nie powtarza
-                while True:
-                    losowa = input("\nPodaj liczbe do zgadywania: ")
-                    if losowa.isnumeric():
-                        break
-                if(losowa not in zle):
-                    print("Pierwsze wystapienie")
+            while True:
+                znak = str(input("Podaj znak liczby (+/-): "))
+                if(str(znak) == "-" or str(znak) == "+"):
+                    break
+            while True:
+                losowa = input("\nPodaj liczbe do zgadywania: ")
+                if losowa.isnumeric():
                     break
 
-            if (int(losowa) < 0):
-                bzlosowa = abs(losowa)
+
+            if (str(znak) == "-"):
                 print("Wysylam")
-                tcpClientA.send(Header.Header(6, 0, id, bzlosowa).getHeader())
+                tcpClientA.send(Header.Header(6, 0, id, int(losowa)).getHeader())
             else:
                 print("Wysylam")
                 tcpClientA.send(Header.Header(5, 0, id, int(losowa)).getHeader())
@@ -105,7 +104,6 @@ while True:
                 print('Zgadles')
                 break
             elif odp == 6:
-                zle.append(losowa)
                 print('Nie zgadles')
 
 
