@@ -2,7 +2,7 @@
 # kodowanie i dekodowanie systemu binarnego
 class Header:
 
-
+    # konstruktor
     def __init__(self, op, ans, sesID, number):
         self.all = []
 
@@ -11,6 +11,7 @@ class Header:
         self.all.append(sesID)  # all[2]; 3 bits
         self.all.append(number)  # all[3]; all[3] bytes
 
+    # kodowanie na binarny system
     def getHeader(self):
         arrayBH = bytearray(6)
         arrayBH[0] += self.all[0]
@@ -30,6 +31,7 @@ class Header:
         arrayBH[5] += (tmpINT & 0xF0)
         return arrayBH
 
+    # dekodowanie z binarnego systemu
     def setHeader(self, rec):
         data = int.from_bytes(rec, 'big')
         bitShift = ((2 ** 4), (2 ** 36), (2 ** 39), (2 ** 42), (2 ** 48))
@@ -52,7 +54,7 @@ class Header:
         self.all[2] = id
         self.all[3] = number
 
-
+    # funkcje wyciagajace dane z dekodowanej wiadomosci
     def getOp(self):
         return self.all[0]
 

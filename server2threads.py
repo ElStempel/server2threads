@@ -87,18 +87,18 @@ def klient1(ip, port):
 
         if (int(op) == 1):
             lista.append(int(num))
-            print("Klient 1 wysylal: ", num)
+            print("Klient 1 wysylal liczbe L: ", num)
             #time.sleep(1)
             licz.join()
             if bezwzg == 1:
-                print("Wysylam do klienta 1: -" + str(dol))
+                print("Wysylam do klienta 1 dolna granice: -" + str(dol))
                 conn.send(Header.Header(0, 3, id, int(dol)).getHeader())
                 # 3 = dol ujemny
             else:
-                print("Wysylam do klienta 1: " + str(dol))
+                print("Wysylam do klienta 1 dolna granice: " + str(dol))
                 conn.send(Header.Header(0, 1, id, int(dol)).getHeader())
                 # wyslanie dolu = 1
-            print("Wysylam do klienta 1: " + str(gora))
+            print("Wysylam do klienta 1 gorna granice: " + str(gora))
             conn.send(Header.Header(0, 2, id, int(gora)).getHeader())
             # wyslanie gory = 2
         if (int(op) == 5):
@@ -153,18 +153,18 @@ def klient2(ip, port):
 
         if (int(op) == 1):
             lista.append(int(num))
-            print("Klient 2 wysylal: ", num)
+            print("Klient 2 wysylal liczbe L: ", num)
             #time.sleep(1)
             licz.join()
             if bezwzg == 1:
-                print("Wysylam do klienta 2: -" + str(dol))
+                print("Wysylam do klienta 2 dolna granice: -" + str(dol))
                 conn2.send(Header.Header(0, 3, id, int(dol)).getHeader())
                 # 3 = dol ujemny
             else:
-                print("Wysylam do klienta 2: " + str(dol))
+                print("Wysylam do klienta 2 dolna granice: " + str(dol))
                 conn2.send(Header.Header(0, 1, id, int(dol)).getHeader())
                 # wyslanie dolu = 1
-            print("Wysylam do klienta 2: " + str(gora))
+            print("Wysylam do klienta 2 gorna granice: " + str(gora))
             conn2.send(Header.Header(0, 2, id, int(gora)).getHeader())
             # wyslanie gory = 2
         if (int(op) == 5):
