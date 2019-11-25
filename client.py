@@ -86,9 +86,9 @@ while True:
                     break
 
             if (int(losowa) < 0):
-                bzlosowa = abs(int(losowa))
+                bzlosowa = abs(losowa)
                 print("Wysylam")
-                tcpClientA.send(Header.Header(6, 0, id, int(bzlosowa)).getHeader())
+                tcpClientA.send(Header.Header(6, 0, id, bzlosowa).getHeader())
             else:
                 print("Wysylam")
                 tcpClientA.send(Header.Header(5, 0, id, int(losowa)).getHeader())
