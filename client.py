@@ -1,5 +1,4 @@
 import socket
-import random
 import Header
 
 
@@ -12,13 +11,6 @@ BUFFER_SIZE = 2000
 # polaczenie ip i portu z socketem
 tcpClientA = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 tcpClientA.connect((host, port))
-
-
-#funkcja losujaca
-def losuj(dol, gora):
-    losowa = random.randint(int(dol), int(gora))
-    print("Losuje: " + str(losowa))
-    return losowa
 
 
 #dzialanie serwera
@@ -73,7 +65,7 @@ while True:
                 x = x - 1
 
 
-        # losowanie i wysylanie liczby
+        # podawanie i wysylanie liczby
         while True:
             while True:
                 znak = str(input("Podaj znak liczby (+/-): "))

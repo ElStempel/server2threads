@@ -77,7 +77,7 @@ def klient1(ip, port):
     req = conn.recv(BUFFER_SIZE)
     gib = Header.Header(0, 0, 0, 0)
     gib.setHeader(req)
-    conn.send(Header.Header(0, 7, id, 0).getHeader())
+    conn.send(Header.Header(9, 7, id, 0).getHeader())
     # wysylanie id = 7
 
     while True:
@@ -142,7 +142,7 @@ def klient2(ip, port):
     req = conn2.recv(BUFFER_SIZE)
     gib = Header.Header(0, 0, 0, 0)
     gib.setHeader(req)
-    conn2.send(Header.Header(0, 7, id, 0).getHeader())
+    conn2.send(Header.Header(9, 7, id, 0).getHeader())
     # wysylanie id = 7
 
     while True:
