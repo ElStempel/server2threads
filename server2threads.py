@@ -88,7 +88,7 @@ def klient1(ip, port):
         if (int(op) == 1):
             lista.append(int(num))
             print("Klient 1 wysylal: ", num)
-            time.sleep(1)
+            #time.sleep(1)
             licz.join()
             if bezwzg == 1:
                 print("Wysylam do klienta 1: -" + str(dol))
@@ -154,7 +154,7 @@ def klient2(ip, port):
         if (int(op) == 1):
             lista.append(int(num))
             print("Klient 2 wysylal: ", num)
-            time.sleep(1)
+            #time.sleep(1)
             licz.join()
             if bezwzg == 1:
                 print("Wysylam do klienta 2: -" + str(dol))
