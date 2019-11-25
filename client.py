@@ -77,7 +77,10 @@ while True:
         zle = []
         while True:
             while True: # sprawdzanie czy liczba sie nie powtarza
-                losowa = losuj(dol, gora)
+                while True:
+                    losowa = input("\nPodaj liczbe L wieksza niz 0: ")
+                    if losowa.isnumeric():
+                        break
                 if(losowa not in zle):
                     print("Pierwsze wystapienie")
                     break
