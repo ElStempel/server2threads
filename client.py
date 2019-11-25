@@ -78,20 +78,20 @@ while True:
         while True:
             while True: # sprawdzanie czy liczba sie nie powtarza
                 while True:
-                    losowa = input("\nPodaj liczbe L wieksza niz 0: ")
+                    losowa = input("\nPodaj liczbe do zgadywania: ")
                     if losowa.isnumeric():
                         break
                 if(losowa not in zle):
                     print("Pierwsze wystapienie")
                     break
 
-            if (losowa < 0):
-                bzlosowa = abs(losowa)
+            if (int(losowa) < 0):
+                bzlosowa = abs(int(losowa))
                 print("Wysylam")
-                tcpClientA.send(Header.Header(6, 0, id, bzlosowa).getHeader())
+                tcpClientA.send(Header.Header(6, 0, id, int(bzlosowa)).getHeader())
             else:
                 print("Wysylam")
-                tcpClientA.send(Header.Header(5, 0, id, losowa).getHeader())
+                tcpClientA.send(Header.Header(5, 0, id, int(losowa)).getHeader())
                 # 5 = zgadywanie
                 # 6 = zgadywanie gdy ujemna
 
