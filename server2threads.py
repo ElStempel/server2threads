@@ -1,7 +1,6 @@
 import random
 import socket
 from threading import Thread
-import time
 import Header
 
 # Dane serwera
@@ -88,7 +87,6 @@ def klient1(ip, port):
         if (int(op) == 1):
             lista.append(int(num))
             print("Klient 1 wysylal liczbe L: ", num)
-            #time.sleep(1)
             licz.join()
             if bezwzg == 1:
                 print("Wysylam do klienta 1 dolna granice: -" + str(dol))
@@ -154,7 +152,6 @@ def klient2(ip, port):
         if (int(op) == 1):
             lista.append(int(num))
             print("Klient 2 wysylal liczbe L: ", num)
-            #time.sleep(1)
             licz.join()
             if bezwzg == 1:
                 print("Wysylam do klienta 2 dolna granice: -" + str(dol))
