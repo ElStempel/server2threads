@@ -21,6 +21,7 @@ Pola operacji:
     000111 - zakończenie połączenia,
     
 Pola odpowiedzi:
+    000 - brak odpowiedzi (wysyła klient)
     111 - wysłanie identyfikatora,
     001 - wysłanie dołu przedziału,
     011 - wysłanie dołu przedziału gdy jest ujemny,
